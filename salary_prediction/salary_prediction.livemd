@@ -1,0 +1,58 @@
+# Salary predictions
+
+## Dependencies
+
+```elixir
+Mix.install([
+  {:exla, "~> 0.1.0-dev", github: "elixir-nx/nx", sparse: "exla"},
+  {:nx, "~> 0.1.0-dev", github: "elixir-nx/nx", sparse: "nx", override: true},
+  {:axon, "~> 0.1.0-dev", github: "elixir-nx/axon"}
+])
+```
+
+```elixir
+x = Nx.tensor([[2011], [2012], [2013], [2014], [2015], [2016], [2017], [2018], [2019], [2020]])
+
+y =
+  Nx.tensor([
+    [3400],
+    [3522],
+    [3650],
+    [3783],
+    [3900],
+    [4047],
+    [4271],
+    [4585],
+    [4918],
+    [5167]
+  ])
+
+x = Nx.subtract(x, 2015)
+y = Nx.log(y)
+```
+
+```elixir
+require Axon
+
+model =
+  Axon.input({10, 1})
+  |> Axon.dense(1, activation: :linear)
+```
+
+```elixir
+start = :erlang.now()
+
+{trained_params, _} =
+  model
+  |> Axon.Training.step(:mean_squared_error, Axon.Optimizers.sgd(0.01))
+  |> Axon.Training.train([x], [y], epochs: 3000, compiler: EXLA)
+
+:timer.now_diff(:erlang.now(), start)
+```
+
+```elixir
+a =
+  Axon.predict(model, trained_params, Nx.tensor([[2030 - 2015]], type: {:f, 32}), compiler: EXLA)
+
+Nx.power(Nx.exp(1), a)
+```

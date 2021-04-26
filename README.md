@@ -4,6 +4,17 @@ A collection of Livebook .livemd examples with training datasets.
 
 ## Salary prediction
 
+### Elixir Livebook
+
+Training time: 0.637s
+
+```
+$ git clone https://github.com/elixir-nx/livebook.git
+$ cd livebook
+$ mix deps.get --only prod
+$ MIX_ENV=prod mix phx.server
+```
+
 ### Python3 version
 
 Training time: 2.860s
