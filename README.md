@@ -25,10 +25,14 @@ Install Erlang and Elixir:
 
 ```
 % git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+% . $HOME/.asdf/asdf.sh
 % asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
-% asdf global erlang 24.0-rc2
+% export KERL_CONFIGURE_OPTIONS="--without-javac --enable-lock-counter --with-microstate-accounting=extra"
+% asdf install erlang 24.0-rc3
+% asdf global erlang 24.0-rc3
 % asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
-% asdf global elixir 1.12.0-rc.0-otp-24
+% asdf install elixir 1.12.0-rc.1-otp-24
+% asdf global elixir 1.12.0-rc.1-otp-24
 
 % cat ~/.zshrc
 export PATH="$PATH:$HOME/bin"
