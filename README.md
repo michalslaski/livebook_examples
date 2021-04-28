@@ -8,9 +8,13 @@ A collection of Livebook .livemd examples with training datasets.
 
 Training time: 0.637s
 
-Compiling EXLA
+#### Compiling EXLA
 
-First time you run the Livebook notebook it will probably need to compile `exla`, which requires bazel to be installed. On macOS Big Sur [this](https://docs.bazel.build/versions/master/install-os-x.html) worked:
+First time you run the Livebook notebook it will probably need to compile `exla`, which requires bazel to be installed.
+
+##### EXLA on macOS Big Sur
+
+On macOS Big Sur [this](https://docs.bazel.build/versions/master/install-os-x.html) worked:
 
 ```
 % export BAZEL_VERSION=3.1.0
@@ -19,9 +23,19 @@ First time you run the Livebook notebook it will probably need to compile `exla`
 % ./bazel-${BAZEL_VERSION}-installer-darwin-x86_64.sh --user
 ```
 
-Next step is to run Livebook, which requires Erlang and Elixir to be installed.
+##### EXLA on RaspberryPi 4
 
-Install Erlang and Elixir:
+```
+$ wget https://github.com/bazelbuild/bazel/releases/download/3.4.0/bazel-3.4.0-linux-arm64
+$ chmod u+x bazel-3.4.0-linux-arm64
+$ ./bazel-3.4.0-linux-arm64
+$ cd ~/bin
+$ ln -s /home/pi/dev/bazel/bazel-3.4.0-linux-arm64 bazel
+```
+
+#### Install Erlang and Elixir:
+
+Next step is to run Livebook, which requires Erlang and Elixir to be installed.
 
 ```
 % git clone https://github.com/asdf-vm/asdf.git ~/.asdf
