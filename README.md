@@ -32,6 +32,11 @@ $ ./bazel-3.4.0-linux-arm64
 $ cd ~/bin
 $ ln -s /home/pi/dev/bazel/bazel-3.4.0-linux-arm64 bazel
 ```
+#### Erlang prerequisites on Linux
+
+```
+$ apt-get -y install build-essential autoconf libncurses5-dev libwxbase3.0-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils openjdk-11-jdk
+```
 
 #### Install Erlang and Elixir:
 
