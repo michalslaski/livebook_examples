@@ -1,0 +1,70 @@
+Mix.install([
+  {:kino, "~> 0.10.0"},
+  {:httpoison, "~> 2.0"},
+  {:jason, "~> 1.4"}
+])
+
+# Import necessary libraries
+alias Kino.Input
+alias Kino.Output
+
+# Function to translate using Google Translate API
+def translate_google(text, target_language) do
+  api_key = "YOUR_GOOGLE_TRANSLATE_API_KEY"
+  url = "https://translation.googleapis.com/language/translate/v2"
+  
+  body = %{
+    q: text,
+    target: target_language,
+    format: "text",
+    key: api_key
+  } |> Jason.encode!()
+
+  headers = [{"Content-Type", "application/json"}]
+
+  case HTTPoison.post(url, body, headers) do
+    {:ok, %{body: body}} ->
+      {:ok, Jason.decode!(body)["data"]["translations"] |> Enum.at(0) |> Map.get("translatedText")}
+    {:error, reason} ->
+      {:error, reason}
+  end
+end
+
+# Function to translate using DeepL API
+def translate_deepl(text, target_language) do
+  api_key = "YOUR_DEEPL_API_KEY"
+  url = "https://api-free.deepl.com/v2/translate"
+  
+  body = %{
+    text: text,
+    target_lang: target_language
+  } |> URI.encode_query()
+
+  headers = [{"Authorization", "DeepL-Auth-Key #{api_key}"}]
+
+  case HTTPoison.post(url, body, headers) do
+    {:ok, %{body: body}} ->
+      {:ok, Jason.decode!(body)["translations"] |> Enum.at(0) |> Map.get("text")}
+    {:error, reason} ->
+      {:error, reason}
+  end
+end
+
+# Create an input field for the user to enter a phrase
+input = Input.text("Enter a phrase in English:")
+
+# Render the input field
+Kino.render(input)
+
+# Wait for the user to submit the input
+phrase = Kino.Input.read(input)
+
+# Translate the phrase using both APIs
+{:ok, google_translation} = translate_google(phrase, "pl")
+{:ok, deepl_translation} = translate_deepl(phrase, "PL")
+
+# Display the translations
+Output.puts("""
+**Google Translate:** #{google_translation}
+**DeepL:** #{deepl_translation}
+""")
