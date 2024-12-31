@@ -1,44 +1,44 @@
-<!-- livebook:{"app_settings":{"access_type":"public","output_type":"rich","show_source":false,"slug":"translate-sonnet"}} -->
+<!-- livebook:{"app_settings":{"access_type":"public","output_type":"rich","slug":"translate-sonnet"}} -->
 
 # Translation Comparison App
 
 ```elixir
 Mix.install([
-  {:kino, "~> 0.11.0"},
-  {:google_translator, "~> 0.2"},
-  {:deepl, "~> 1.2"}
+  {:kino, "~> 0.14.2"},
+  {:deepl_ex, "~> 0.4.0"},
+  {:google_api_translate, "~> 0.21.0"}
 ])
 ```
 
 ## Configuration
 
-<!-- livebook:{"smart_cell":true} -->
 ```elixir
 # Configure DeepL API key - using Livebook secrets
-deepl_api_key = System.fetch_env!("LB_DEEPL_API_KEY")
-# Configure Google Translate API key - using Livebook secrets
-google_api_key = System.fetch_env!("LB_GOOGLE_API_KEY")
+Application.put_env(:deepl_ex, :api_key, System.fetch_env!("LB_DEEPL_API_KEY"))
 
-# Configure clients
-DeepL.configure(api_key: deepl_api_key)
-GoogleTranslator.configure(api_key: google_api_key)
+# Configure Google Translate API key - using Livebook secrets
+System.fetch_env!("LB_GOOGLE_API_KEY")
 ```
 
 ## Translation Logic
 
 ```elixir
 defmodule Translator do
-  def translate_with_google(text) do
-    case GoogleTranslator.translate(text, from: "en", to: "pl") do
+  def translate_with_deepl(text) do
+    case DeeplEx.translate(text, :EN, :PL) do
       {:ok, translation} -> translation
-      {:error, reason} -> "Error with Google Translate: #{inspect(reason)}"
+      {:error, reason} -> "Error with DeepL: #{inspect(reason)}"
     end
   end
 
-  def translate_with_deepl(text) do
-    case DeepL.translate(text, source_lang: "EN", target_lang: "PL") do
-      {:ok, translation} -> translation.text
-      {:error, reason} -> "Error with DeepL: #{inspect(reason)}"
+  def translate_with_google(text) do
+    conn = GoogleApi.Translate.V2.Connection.new()
+    case GoogleApi.Translate.V2.Api.Translations.language_translations_list(conn, text, "pl", [
+           {:source, "en"},
+           {:key, System.fetch_env!("LB_GOOGLE_API_KEY")}
+         ]) do
+      {:ok, translation} -> hd(translation.translations).translatedText
+      {:error, reason} -> "Error with Google: #{inspect(reason)}"
     end
   end
 end
@@ -54,7 +54,9 @@ form = Kino.Control.form(
   ],
   submit: "Translate"
 )
+```
 
+```elixir
 # Create frame for displaying results
 result_frame = Kino.Frame.new()
 
@@ -81,3 +83,5 @@ end)
 
 result_frame
 ```
+
+<!-- livebook:{"offset":1969,"stamp":{"token":"XCP.I0Pxfkk5GgUsxWQnzCAqaGJw_v4Ay_Pg6OOcHJZj7EgfsuvB5b03XQ2QMPC4uKwux0h7_E-PZlvOrygkhMf7MsLSb2MaQyoYy53M72Tgcw7dB-H2qvakR3KcyEZg5M84GjLdCe8b3SwuNLXynuVN3U40TvWMfFENKz01QuJwEhY","version":2}} -->
