@@ -16,4 +16,4 @@ ENV LIVEBOOK_IP="::"
 EXPOSE 8080
 EXPOSE 8081
 
-CMD ["server"]
+CMD [ "/app/bin/server" ]
