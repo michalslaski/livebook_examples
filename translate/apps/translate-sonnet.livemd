@@ -1,23 +1,32 @@
+<!-- livebook:{"app_settings":{"access_type":"public","output_type":"rich","show_source":false,"slug":"translate-sonnet"}} -->
+
+# Translation Comparison App
+
+```elixir
 Mix.install([
   {:kino, "~> 0.11.0"},
   {:google_translator, "~> 0.2"},
   {:deepl, "~> 1.2"}
 ])
+```
 
-# Configure DeepL API key
-deepl_key_input = Kino.Input.password("DeepL API Key")
-deepl_api_key = Kino.Input.read(deepl_key_input)
+## Configuration
 
-# Configure Google Translate API key
-google_key_input = Kino.Input.password("Google Translate API Key")
-google_api_key = Kino.Input.read(google_key_input)
+<!-- livebook:{"smart_cell":true} -->
+```elixir
+# Configure DeepL API key - using Livebook secrets
+deepl_api_key = System.fetch_env!("LB_DEEPL_API_KEY")
+# Configure Google Translate API key - using Livebook secrets
+google_api_key = System.fetch_env!("LB_GOOGLE_API_KEY")
 
-# Configure DeepL client
+# Configure clients
 DeepL.configure(api_key: deepl_api_key)
-
-# Configure Google Translate client
 GoogleTranslator.configure(api_key: google_api_key)
+```
 
+## Translation Logic
+
+```elixir
 defmodule Translator do
   def translate_with_google(text) do
     case GoogleTranslator.translate(text, from: "en", to: "pl") do
@@ -33,7 +42,11 @@ defmodule Translator do
     end
   end
 end
+```
 
+## User Interface
+
+```elixir
 # Create input form for the English text
 form = Kino.Control.form(
   [
@@ -67,3 +80,4 @@ form
 end)
 
 result_frame
+```
