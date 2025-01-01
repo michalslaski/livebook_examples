@@ -1,4 +1,4 @@
-<!-- livebook:{"app_settings":{"access_type":"public","output_type":"rich","slug":"translate-sonnet"}} -->
+<!-- livebook:{"app_settings":{"access_type":"public","output_type":"rich","slug":"translate"}} -->
 
 # Translation Comparison App
 
@@ -66,17 +66,24 @@ form
   google_translation = Translator.translate_with_google(english_text)
   deepl_translation = Translator.translate_with_deepl(english_text)
 
-  content = Kino.Markdown.new("""
-  ## Translation Results
-
-  **Original Text:** #{english_text}
-
-  ### Google Translate
-  #{google_translation}
-
-  ### DeepL
-  #{deepl_translation}
-  """)
+  content =
+    Kino.Layout.grid(
+      [
+        Kino.Markdown.new("""
+        ### Original Text
+        #{english_text}
+        """),
+        Kino.Markdown.new("""
+        ### Google Translate
+        #{google_translation}
+        """),
+        Kino.Markdown.new("""
+        ### DeepL
+        #{deepl_translation}
+        """)
+      ],
+      columns: 3
+    )
 
   Kino.Frame.render(result_frame, content)
 end)
@@ -84,4 +91,4 @@ end)
 result_frame
 ```
 
-<!-- livebook:{"offset":1969,"stamp":{"token":"XCP.I0Pxfkk5GgUsxWQnzCAqaGJw_v4Ay_Pg6OOcHJZj7EgfsuvB5b03XQ2QMPC4uKwux0h7_E-PZlvOrygkhMf7MsLSb2MaQyoYy53M72Tgcw7dB-H2qvakR3KcyEZg5M84GjLdCe8b3SwuNLXynuVN3U40TvWMfFENKz01QuJwEhY","version":2}} -->
+<!-- livebook:{"offset":2142,"stamp":{"token":"XCP.p_763I8gO5epWfsS03Uflh-SPwHiaHNEjWXwJTpCq0hxUXr3hiRrFA7oT6FIb6kurkkDuUGzJAcBNGGpmQVqTGsbBV8pUK3f3-vZr5xvKLGFKSLjHrduJRTaHDFbXSXHnWoU_h39bWzS6XPXNnRpqIpWJOy4wJg7AVTxJgbPDJM","version":2}} -->
