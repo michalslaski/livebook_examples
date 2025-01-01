@@ -90,5 +90,3 @@ end)
 
 result_frame
 ```
-
-<!-- livebook:{"offset":2135,"stamp":{"token":"XCP.HoD4eP85GWrDLaFKaZ70LWKgpTUN2kNWl10caon5ivPM0OF_M1F1q4KBDFC_Vy1cr0yC2d5I2hVX9gp-y3IT9NybVKhTkBP_KYdpF_H5x478BrjY6IiNCRNITFIdM_bqmXBygVrlC1QdRhrQ_J628bctLcFLprn_cy50Jipj0Dg","version":2}} -->
